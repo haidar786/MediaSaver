@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".fragments.AddItemFragment">
 
-    <TextView
+    <EditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Hello"/>
-
-</FrameLayout>
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:paddingStart="8dp"
+            android:paddingEnd="4dp"
+            android:layout_margin="16dp"
+            android:hint="title"
+            android:ems="10"
+            android:id="@+id/titleEditText"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:layout_margin="16dp"
+            android:hint="message"
+            android:gravity="start|top"
+            android:ems="10"
+            android:id="@+id/messageEditText"/>
+</LinearLayout>
