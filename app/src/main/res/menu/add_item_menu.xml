@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_camera"
+          android:title="Camera"
+          android:icon="@drawable/ic_menu_camera"
+          app:showAsAction="always"/>
+    <item android:id="@+id/action_microphone"
+          android:title="Microphone"
+          app:showAsAction="always"
+          android:icon="@drawable/ic_mic_black_24dp" />
+    <item
+        android:id="@+id/action_picture"
+        android:title="Add Photo"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_insert_photo_black_24dp" />
+    <item
+        android:id="@+id/action_add"
+        android:title="Save"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_add_black_24dp"/>
+</menu>
