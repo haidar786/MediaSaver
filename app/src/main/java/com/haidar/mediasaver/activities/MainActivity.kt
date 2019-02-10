@@ -8,6 +8,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.View
+import android.widget.Toast
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -87,9 +88,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         drawer_layout.closeDrawer(GravityCompat.START)
-        return NavigationUI.onNavDestinationSelected(item,
-            Navigation.findNavController(this, R.id.nav_controller_fragment))
-                || super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.nav_gallery -> true
+            else ->
+            NavigationUI.onNavDestinationSelected(
+                item,navController) || super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
