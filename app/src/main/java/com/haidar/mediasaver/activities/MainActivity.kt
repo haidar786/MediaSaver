@@ -7,56 +7,61 @@ import android.view.MenuItem
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
+import android.view.View
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.haidar.mediasaver.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    private lateinit var navController: NavController
+
+    private lateinit var appBarConfiguration: AppBarConfiguration
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        navController = findNavController(R.id.nav_controller_fragment)
+        appBarConfiguration = AppBarConfiguration(navController.graph,drawer_layout)
+        setupActionBarWithNavController(navController,appBarConfiguration)
+
         drawer()
-        navigation()
+
+        setupNavigationMenu()
         nav_view.setNavigationItemSelectedListener(this)
     }
 
-    private fun navigation() {
-        val host: NavHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_controller_fragment) as NavHostFragment? ?: return
+    private fun drawer() {
+        drawer_layout.addDrawerListener(object :DrawerLayout.DrawerListener{
+            override fun onDrawerStateChanged(newState: Int) {
+            }
 
-        //Set up action bar
-        val navController = host.navController
-        setupActionBar(navController)
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
 
-        setupNavigationMenu(navController)
+            override fun onDrawerClosed(drawerView: View) {
+            }
 
-
+            override fun onDrawerOpened(drawerView: View) {
+            }
+        })
     }
 
-    private fun setupNavigationMenu(navController: NavController) {
+
+    private fun setupNavigationMenu() {
         nav_view.let {
             NavigationUI.setupWithNavController(it, navController)
         }
-    }
-
-    private fun setupActionBar(navController: NavController) {
-        NavigationUI.setupActionBarWithNavController(this,navController,drawer_layout)
-    }
-
-    private fun drawer() {
-        val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
     }
 
     override fun onBackPressed() {
@@ -68,23 +73,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        /*return when (item.itemId) {
+        return when (item.itemId) {
             R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }*/
-        return NavigationUI.onNavDestinationSelected(item,
-            Navigation.findNavController(this,R.id.nav_controller_fragment))
-        || super.onOptionsItemSelected(item)
+            else -> NavigationUI.onNavDestinationSelected(item,navController) || super.onOptionsItemSelected(item)
 
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -95,6 +93,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(Navigation.findNavController(this,R.id.nav_controller_fragment),drawer_layout)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
